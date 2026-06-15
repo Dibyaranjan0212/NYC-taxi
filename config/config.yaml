@@ -16,6 +16,11 @@ download:
 
   base_url: https://d37ci6vzurychx.cloudfront.net
 
+  dataset_folder: trip-data
+
+  zone_lookup_url: https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
+
+  
 quality:
 
   max_passengers: 6
