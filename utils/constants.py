@@ -1,0 +1,12 @@
+# utils/constants.py
+
+VALID_LOCATION_MIN = 1
+VALID_LOCATION_MAX = 263
+
+MAX_PASSENGERS = 6
+
+MAX_FARE_AMOUNT = 1000
+
+
+
+from utils.constants import MAX_PASSENGERS

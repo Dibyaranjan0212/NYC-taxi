@@ -4,10 +4,20 @@ pipeline:
 
   taxi_type: yellow
 
-paths:
+storage:
 
-  bronze: data/bronze/
+  bronze_path: data/bronze
 
-  silver: data/silver/
+  silver_path: data/silver
 
-  gold: data/gold/
+  gold_path: data/gold
+
+download:
+
+  base_url: https://d37ci6vzurychx.cloudfront.net
+
+quality:
+
+  max_passengers: 6
+
+  max_fare_amount: 1000
