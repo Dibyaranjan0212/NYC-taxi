@@ -1,28 +1,66 @@
+project:
+
+  name: nyc-taxi-analytics
+
+  environment: dev
+
 pipeline:
 
   start_year: 2023
 
   taxi_type: yellow
 
-storage:
-
-  bronze_path: data/bronze
-
-  silver_path: data/silver
-
-  gold_path: data/gold
-
 download:
 
   base_url: https://d37ci6vzurychx.cloudfront.net
 
-  dataset_folder: trip-data
+  trip_data_folder: trip-data
 
   zone_lookup_url: https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
 
-  
+
+local:
+
+  download_path: data/temp
+
+
+aws:
+
+  region: ap-south-1
+
+  bucket_name: nyc-taxi-analytics-dibya
+
+  bronze_prefix: bronze
+
+  silver_prefix: silver
+
+  gold_prefix: gold
+
+databricks:
+
+  catalog: nyc_taxi
+
+  schema: analytics
+
 quality:
 
   max_passengers: 6
 
   max_fare_amount: 1000
+
+  min_location_id: 1
+
+  max_location_id: 263
+
+snowflake:
+
+  warehouse: COMPUTE_WH
+
+  database: NYC_TAXI
+
+  schema: ANALYTICS
+
+
+dashboard:
+
+  default_year: 2023

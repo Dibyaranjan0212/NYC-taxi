@@ -3,6 +3,11 @@ from ingestion.downloader import (
     download_zone_lookup
 )
 
+from ingestion.s3_upload import (
+    upload_bronze_file,
+    delete_local_file
+)
+
 from utils.config import load_config
 from utils.logger import get_logger
 
@@ -15,7 +20,9 @@ def run():
 
     year = config["pipeline"]["start_year"]
 
-    bronze_path = config["storage"]["bronze_path"]
+    download_path = (
+        config["local"]["download_path"]
+    )
 
     logger.info(
         f"Starting ingestion for {year}"
@@ -23,18 +30,34 @@ def run():
 
     for month in range(1, 13):
 
-        download_monthly_file(
+        local_file = download_monthly_file(
             year=year,
             month=month,
-            output_dir=bronze_path
+            output_dir=download_path
         )
 
-    download_zone_lookup(
-        output_dir=bronze_path
+        upload_bronze_file(
+            local_file
+        )
+
+        delete_local_file(
+            local_file
+        )
+
+    zone_lookup = download_zone_lookup(
+        output_dir=download_path
+    )
+
+    upload_bronze_file(
+        zone_lookup
+    )
+
+    delete_local_file(
+        zone_lookup
     )
 
     logger.info(
-        "Bronze ingestion completed successfully."
+        "Bronze ingestion completed."
     )
 
 

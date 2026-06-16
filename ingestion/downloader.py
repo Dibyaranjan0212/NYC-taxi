@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 config = load_config()
 
 BASE_URL = config["download"]["base_url"]
-DATASET_FOLDER = config["download"]["dataset_folder"]
+TRIP_DATA_FOLDER = config["download"]["trip_data_folder"]
 ZONE_LOOKUP_URL = config["download"]["zone_lookup_url"]
 
 
@@ -61,7 +61,7 @@ def download_monthly_file(
 
     filename = f"yellow_tripdata_{year}-{month:02d}.parquet"
 
-    url = f"{BASE_URL}/{DATASET_FOLDER}/{filename}"
+    url = f"{BASE_URL}/{TRIP_DATA_FOLDER}/{filename}"
 
     local_path = Path(output_dir) / filename
 
@@ -86,7 +86,9 @@ def download_monthly_file(
     response.raise_for_status()
 
     with open(local_path, "wb") as file:
-        for chunk in response.iter_content(chunk_size=8192):
+        for chunk in response.iter_content(
+                chunk_size=8192
+        ):
             file.write(chunk)
 
     logger.info(
@@ -126,7 +128,11 @@ def download_zone_lookup(
 
     response.raise_for_status()
 
-    with open(local_path, "w", encoding="utf-8") as file:
+    with open(
+            local_path,
+            "w",
+            encoding="utf-8"
+    ) as file:
         file.write(response.text)
 
     logger.info(
@@ -134,4 +140,3 @@ def download_zone_lookup(
     )
 
     return str(local_path)
-

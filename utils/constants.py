@@ -9,4 +9,3 @@ MAX_FARE_AMOUNT = 1000
 
 
 
-# from utils.constants import MAX_PASSENGERS
