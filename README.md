@@ -9,8 +9,7 @@ The pipeline ingests NYC Yellow Taxi trip data, processes it through a Medallion
 ---
 
 ## Architecture
-![Architecture](<WhatsApp Image 2026-06-18 at 10.43.49 PM.jpeg>)
----
+![Architechture](images/image.png)
 
 ## Tech Stack
 * Python
@@ -24,7 +23,6 @@ The pipeline ingests NYC Yellow Taxi trip data, processes it through a Medallion
 ---
 
 ## Data Pipeline
-
 ### Bronze Layer
 
 * Download raw NYC Taxi trip data
