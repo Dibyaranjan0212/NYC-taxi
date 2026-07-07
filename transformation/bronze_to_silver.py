@@ -1,4 +1,8 @@
 import pandas as pd
+from utils.logger import get_logger
+logger = get_logger(__name__)
+
+# logger.info("Starting download")
 
 from common.config import (
     BRONZE_PATH,
@@ -60,13 +64,11 @@ def run() -> None:
     """
 
     try:
-        print("=" * 60)
-        print("Starting Bronze → Silver Pipeline")
-        print("=" * 60)
+        logger.info("Starting Bronze → Silver Pipeline")
 
         # Read Bronze layer
         bronze_df = read_parquet(BRONZE_PATH)
-        print(f"Bronze records: {len(bronze_df):,}")
+        logger.info(f"Bronze records: {len(bronze_df):,}")
 
         # Cleaning
         silver_df = cast_columns(bronze_df)
@@ -84,7 +86,7 @@ def run() -> None:
         # Select final columns
         silver_df = select_final_columns(silver_df)
 
-        print(f"Silver records: {len(silver_df):,}")
+        logger.info(f"Silver records: {len(silver_df):,}")
 
         # Write Silver layer
         write_parquet(
@@ -93,15 +95,14 @@ def run() -> None:
             partition_cols=["pickup_date"],
         )
 
-        print("=" * 60)
-        print("Bronze → Silver Pipeline Completed Successfully")
-        print("=" * 60)
+        logger.info("Bronze → Silver Pipeline Completed Successfully")
+        logger.info("=" * 60)
 
     except Exception as e:
-        print("=" * 60)
-        print("Bronze → Silver Pipeline Failed")
-        print(f"Error: {e}")
-        print("=" * 60)
+        logger.error("=" * 60)
+        logger.error("Bronze → Silver Pipeline Failed")
+        logger.error(f"Error: {e}")
+        logger.error("=" * 60)
         raise
 
 

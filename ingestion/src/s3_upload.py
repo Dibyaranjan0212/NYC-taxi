@@ -110,9 +110,7 @@ def delete_local_file(
     path = Path(local_file_path)
 
     if path.exists():
-
         path.unlink()
-
         logger.info(
             f"Deleted local file: {local_file_path}"
         )

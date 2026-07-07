@@ -8,6 +8,3 @@ def load_config():
         return yaml.safe_load(file)
     
 
-    
-# from utils.config import load_config
-# config = load_config()

@@ -1,39 +1,17 @@
 import os
-
 from dotenv import load_dotenv
-
 load_dotenv()
 
-
-# ------------------------------------------------------------------
-# Environment
-# ------------------------------------------------------------------
-
 ENV = os.getenv("ENV", "local")
-
-
-# ------------------------------------------------------------------
-# AWS
-# ------------------------------------------------------------------
 
 AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
 AWS_REGION = os.getenv("AWS_REGION")
 AWS_BUCKET = os.getenv("AWS_BUCKET")
 
-
-# ------------------------------------------------------------------
-# Processing
-# ------------------------------------------------------------------
-
 PROCESSING_YEAR = int(
     os.getenv("PROCESSING_YEAR", "2023")
 )
-
-
-# ------------------------------------------------------------------
-# S3 Paths
-# ------------------------------------------------------------------
 
 BRONZE_PATH = (
     f"s3://{AWS_BUCKET}/bronze/trip_data/"

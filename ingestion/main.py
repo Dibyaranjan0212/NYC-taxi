@@ -1,9 +1,9 @@
-from ingestion.downloader import (
+from ingestion.src.downloader import (
     download_monthly_file,
     download_zone_lookup
 )
 
-from ingestion.s3_upload import (
+from ingestion.src.s3_upload import (
     upload_bronze_file,
     delete_local_file
 )
