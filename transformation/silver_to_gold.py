@@ -124,6 +124,51 @@ def list_silver_files():
     return parquet_files
 
 
+def delete_gold_folder():
+    """
+    Delete all existing objects from the Gold layer.
+    """
+
+    print("\nDeleting existing Gold layer...")
+
+    bucket = GOLD_PATH.replace("s3://", "").split("/")[0]
+
+    prefix = "/".join(
+        GOLD_PATH.replace("s3://", "").split("/")[1:]
+    )
+
+    paginator = s3_client.get_paginator("list_objects_v2")
+
+    objects = []
+
+    for page in paginator.paginate(
+        Bucket=bucket,
+        Prefix=prefix,
+    ):
+
+        for obj in page.get("Contents", []):
+
+            objects.append(
+                {"Key": obj["Key"]}
+            )
+
+    if not objects:
+        print("Gold folder already empty.")
+        return
+
+    for i in range(0, len(objects), 1000):
+
+        s3_client.delete_objects(
+            Bucket=bucket,
+            Delete={
+                "Objects": objects[i:i + 1000]
+            },
+        )
+
+    print(f"Deleted {len(objects)} objects.\n")
+
+
+
 def run():
     """
     Run Silver -> Gold ETL Pipeline.
@@ -133,6 +178,8 @@ def run():
     print("Starting Silver -> Gold Pipeline")
     print("=" * 80)
 
+    delete_gold_folder()
+    
     # ============================================================
     # Create Static Dimensions
     # ============================================================
@@ -145,18 +192,18 @@ def run():
 
     write_parquet(
         dim_payment,
-        f"{GOLD_PATH}/dim_payment/",
+        f"{GOLD_PATH}/dim_payment/dim_payment.parquet",
     )
 
     write_parquet(
         dim_vendor,
-        f"{GOLD_PATH}/dim_vendor/",
-    )
+        f"{GOLD_PATH}/dim_vendor/dim_vendor.parquet",
+)
 
     write_parquet(
         dim_location,
-        f"{GOLD_PATH}/dim_location/",
-    )
+        f"{GOLD_PATH}/dim_location/dim_location.parquet",
+)
 
     print("Static dimensions created.\n")
 
@@ -199,8 +246,8 @@ def run():
         date_key = fact_trip["date_key"].iloc[0]
 
         write_parquet(
-            fact_trip,
-            f"{GOLD_PATH}/fact_trip/date_key={date_key}/",
+        fact_trip,
+        f"{GOLD_PATH}/fact_trip/date_key={date_key}/part-00000.parquet",
         )
 
         # --------------------------------------------------------
@@ -263,7 +310,7 @@ def run():
 
     write_parquet(
         fact_daily_df,
-        f"{GOLD_PATH}/fact_daily/",
+        f"{GOLD_PATH}/fact_daily/fact_daily.parquet",
     )
 
     # ============================================================
@@ -272,7 +319,7 @@ def run():
 
     write_parquet(
         dim_date_df,
-        f"{GOLD_PATH}/dim_date/",
+        f"{GOLD_PATH}/dim_date/dim_date.parquet",
     )
 
     print("\nDynamic tables created successfully.")

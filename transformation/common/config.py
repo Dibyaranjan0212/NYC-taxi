@@ -13,17 +13,11 @@ PROCESSING_YEAR = int(
     os.getenv("PROCESSING_YEAR", "2023")
 )
 
-BRONZE_PATH = (
-    f"s3://{AWS_BUCKET}/bronze/trip_data/"
-)
+BRONZE_PATH = (f"s3://{AWS_BUCKET}/bronze/trip_data/")
 
-SILVER_PATH = (
-    f"s3://{AWS_BUCKET}/silver/trips/"
-)
+SILVER_PATH = (f"s3://{AWS_BUCKET}/silver/trips/")
 
-GOLD_PATH = (
-    f"s3://{AWS_BUCKET}/gold/"
-)
+GOLD_PATH = (f"s3://{AWS_BUCKET}/gold")
 
 LOOKUP_PATH = "s3://nyc-taxi-analytics-dibya/bronze/lookup/taxi_zone_lookup.csv"
 
@@ -48,3 +42,5 @@ if _missing:
     raise ValueError(
         f"Missing environment variables: {', '.join(_missing)}"
     )
+
+
