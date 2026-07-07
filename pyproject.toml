@@ -12,4 +12,8 @@ dependencies = [
     "requests>=2.34.2",
     "pyspark==3.5.1",
     "boto3>=1.43.30",
+    "snowflake-connector-python>=4.6.0",
+    "dotenv>=0.9.9",
+    "streamlit>=1.59.0",
+    "plotly>=6.8.0",
 ]
